@@ -9,17 +9,20 @@ def is_PNGS(seq, site):
 	#not PNGS
 	return 0
 	
-def calc_similarities(byYear, firstY, lastY, epitope):
-	Sims = [[] for i in range(firstY, lastY+1)]
+def calc_similarities(byYear, firstY, lastY, site, vac):
+	Sims = []
+	
 	for y in range(len(byYear)):
 		Sim = 0
 		for seq in byYear[y]:
 			s = 0
-			for l in epitope:
+			for l in site:
 				if seq[l-1] == vac[l-1]:
 					s += 1
 			Sim += s
-		
-		Sim = 1.0*Sim/len(byYear[y])
-		Sims.append(Sim)
-	return Sim
+		try:
+			Sim = 1.0*Sim/len(byYear[y])
+			Sims.append(Sim)
+		except ZeroDivisionError:
+			Sims.append("NA")
+	return Sims
